@@ -2,18 +2,14 @@ import requests
 import subprocess
 import time
 from datetime import timedelta
-from utils.sap_open import SAP
 from routes.execution_history import *
 from routes.error_log import *
 
-default_credentials = open('utils/sap_login.txt', 'r').readline().strip().split(';')
-
 def indicador_expedicao():
     indicator_name = 'Indicador da Expedição'
-    SAP('PT',{'principal':default_credentials[0],'username':default_credentials[1],'password':default_credentials[2]})
     try:
         start_time = time.time()
-        #FAZER AQUI O PROCEDIMENTO DE ATUALIZAÇÃO DE CADA UM DOS ARQUIVOS INDIVIDUALMENTE!
+        subprocess.run(['python', 'Q:/GROUPS/BR_SC_JGS_WM_LOGISTICA/PCP/Robert/Testes/abrir_sap.py'], check=True)
         end_time = time.time()
         elapsed_time = timedelta(seconds=(end_time - start_time))
         response = requests.post('http://127.0.0.1:5000/registros', 

@@ -2,7 +2,7 @@ import schedule
 import time
 from services.functions import *
 
-schedule.every().day.at('08:50:10').do(indicador_expedicao)
+schedule.every().day.at('09:49:50').do(indicador_expedicao)
 
 def run_scheduler():
     while True:
