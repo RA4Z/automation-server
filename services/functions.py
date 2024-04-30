@@ -47,6 +47,14 @@ def encerramento_ordens():
                         'duration':str(elapsed_time)})
         return f'Error: {str(e)}'
      
+def coletar_materiais_ecm():
+    indicator_name = 'Encerramento de Ordens'
+    start_time = time.time()
+    subprocess.run(['python', 'Q:/GROUPS/BR_SC_JGS_WM_LOGISTICA/PCP/Central/__Automaticos_Python/04-materiais_ECM/executable.py'], check=True)
+    end_time = time.time()
+    elapsed_time = timedelta(seconds=(end_time - start_time))
+    print(f'{indicator_name} -> {elapsed_time}')
+    
 def controle_de_estoque():
     indicator_name = 'Controle de Estoque'
     try:
