@@ -24,6 +24,7 @@ def run_scheduler():
         
         time.sleep(5)
 
+
 def check_files(param_queue:list):
     path = 'Q:\GROUPS\BR_SC_JGS_WM_LOGISTICA\PCP\Central\__Automaticos_Python\__Agendamentos'
     files = os.listdir(path)
@@ -38,6 +39,7 @@ def check_files(param_queue:list):
             queue.append({'time':time, 'filename':filename,'performed':False})
     
     return queue
+
 
 def something_is_running(queue:list):
     for schedule in queue:
@@ -61,3 +63,4 @@ def get_last_delimiter_segment(text):
         if index != -1:
             return text[index + 1 :]
     return text
+
