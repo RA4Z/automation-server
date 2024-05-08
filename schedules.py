@@ -4,20 +4,30 @@ import subprocess
 
 def run_scheduler():
     queue = []
+    atrasados = []
     while True:
         try:
             queue = check_files(queue)
             status = something_is_running(queue)
 
             if not status:
+                if len(atrasados) > 0:
+                    atrasados[0]['performed'] = True
+                    subprocess.run(['python', atrasados[0]['filename']])
+                    atrasados.pop(0)
+                    
                 now = time.time()
+                hoje = time.strftime("%d/%m/%Y", time.localtime(now))
                 now = time.strftime("%H:%M", time.localtime(now))
 
                 for schedule in queue:
-                    if schedule['time'] == now and not schedule['performed']:
+                    if schedule['time'] == now and (schedule['data'] == '' or schedule['data'] == hoje):
                         print(schedule)
                         schedule['performed'] = True
                         subprocess.run(['python', schedule['filename']])
+            else:
+                if schedule['time'] == now and not schedule['performed'] and schedule['time'] not in [item['time'] for item in atrasados]:
+                    atrasados.append(schedule)
 
         except Exception as e:
             print(f'Error: {str(e)}')
@@ -35,8 +45,10 @@ def check_files(param_queue:list):
         time = time.replace('.',':')
 
         if time not in [item['time'] for item in queue]:
-            filename = open(f'{path}/{file}','r',encoding='utf-8').readline().strip()
-            queue.append({'time':time, 'filename':filename,'performed':False})
+            with open(f'{path}/{file}', 'r', encoding='utf-8') as file:
+                filename = file.readline().strip()
+                data_exec = file.readline().strip()
+                queue.append({'time':time, 'filename':filename,'data':data_exec,'performed':False})
     
     return queue
 
